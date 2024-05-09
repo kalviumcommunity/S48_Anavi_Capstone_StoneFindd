@@ -1,0 +1,11 @@
+{
+  "name": "s48_anavi_capstone_stonefindd",
+  "version": "1.0.0",
+  "description": "Introduction:\r This project aims to create a web application that displays the inventory of local stone and tile sellers. The platform will enable users to explore product options, check stock availability, and get in touch with nearby businesses directly for inquiries.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
