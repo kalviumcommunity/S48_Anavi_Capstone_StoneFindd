@@ -11,7 +11,13 @@ app.get('/data', (req, res) => {
 // POST endpoint
 app.post('/data', (req, res) => {
   const data = req.body;
-  res.json({ message: 'Data received via POST', data: data });
+  res.json({ message: 'This is a POST request', data: data });
+});
+
+// PUT endpoint
+app.put('/data', (req, res) => {
+  const data = req.body;
+  res.json({ message: 'This is a PUT request', data: data });
 });
 
 app.listen(PORT, () => {
