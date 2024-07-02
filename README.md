@@ -23,3 +23,9 @@ Database management system: Develop a system that stores product details, includ
 
 Mapping API integration: Integrate a mapping API to enable location-based search functionalities. This will allow buyers to find nearby sellers and filter results geographically.
 
+
+
+
+
+
+Backend Deployed Link:  https://s48-anavi-capstone-stonefindd-1.onrender.com
