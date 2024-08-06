@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const MongoClient = require('mongodb').MongoClient;
 const mongoose=require("mongoose")
+const User = require('./models/user');
 
 const PORT = process.env.PORT || 3000;
 
@@ -25,9 +26,14 @@ app.get('/', (req, res) => {
 });
 
 // POST endpoint
-app.post('/data', (req, res) => {
-  const data = req.body;
-  res.json({ message: 'This is a POST request', data: data });
+app.post('/data', async (req, res) => {
+  try {
+    const newUser = new User(req.body);
+    await newUser.save();
+    res.json({ message: 'User created successfully', data: newUser });
+  } catch (err) {
+    res.status(500).json({ message: 'Error creating user', error: err.message });
+  }
 });
 
 // PUT endpoint
