@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
-const MongoClient = require('mongodb').MongoClient;
 const mongoose = require('mongoose');
 const User = require('./models/user');
+const Post = require('./models/post'); 
 
 const PORT = process.env.PORT || 3000;
 
@@ -20,6 +20,8 @@ async function Connect() {
   }
 }
 
+// Routes
+
 // GET endpoint to retrieve all users
 app.get('/users', async (req, res) => {
   try {
@@ -33,7 +35,7 @@ app.get('/users', async (req, res) => {
 // GET endpoint to retrieve a specific user by ID
 app.get('/users/:id', async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).populate('posts'); // Populate posts
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -77,6 +79,39 @@ app.delete('/users/:id', async (req, res) => {
     res.json({ message: 'User deleted successfully', data: deletedUser });
   } catch (err) {
     res.status(500).json({ message: 'Error deleting user', error: err.message });
+  }
+});
+
+// POST endpoint to create a new post
+app.post('/posts', async (req, res) => {
+  try {
+    const { title, content, userId } = req.body;
+
+    // Create the post
+    const newPost = new Post({ title, content, user: userId });
+    await newPost.save();
+
+    // Update the user with the new post
+    const user = await User.findById(userId);
+    user.posts.push(newPost._id);
+    await user.save();
+
+    res.status(201).json({ message: 'Post created successfully', data: newPost });
+  } catch (err) {
+    res.status(500).json({ message: 'Error creating post', error: err.message });
+  }
+});
+
+// GET endpoint to retrieve all posts for a specific user
+app.get('/users/:id/posts', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).populate('posts');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json({ message: 'Posts retrieved successfully', data: user.posts });
+  } catch (err) {
+    res.status(500).json({ message: 'Error retrieving posts', error: err.message });
   }
 });
 
